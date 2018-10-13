@@ -90,8 +90,6 @@ int main( int argc, char** argv )
     for(;;)
     {
         Mat frame, fgMask, fg, bg, kernel;
-        Point p = new Point(-1,-1);
-        cv::Size s = new cv::Size(5,5);
         cap.grab();
         cap.retrieve ( frame);
         if( frame.empty() )
@@ -101,10 +99,10 @@ int main( int argc, char** argv )
         
         pBgSub->apply(frame, fgMask);
         //processing steps!
-        kernel = cv::getStructuringElement(MORPH_ELLIPSE, s);
+        kernel = cv::getStructuringElement(MORPH_ELLIPSE, Size(5,5));
         cv::morphologyEx(frame, frame, MORPH_CLOSE, kernel);
         cv::morphologyEx(frame, frame, MORPH_OPEN, kernel);
-        cv::dilate(frame, frame, kernel, p, 2);
+        cv::dilate(frame, frame, kernel, Point(-1,-1), 2);
         if (hasGui)
         {
             imshow("Orig", frame);
