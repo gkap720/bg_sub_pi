@@ -88,7 +88,7 @@ int main( int argc, char** argv )
                 "Use ESC to quit.\n" << endl;
     }
     int64 startTime = getTickCount();
-    Mat kernel;
+    Mat kernel, avg, frameDelta;
     kernel = cv::getStructuringElement(MORPH_ELLIPSE, Size(5,5));
     for(;;)
     {
@@ -102,14 +102,18 @@ int main( int argc, char** argv )
         {
             break;
         }
-        
-        pBgSub->apply(frame, fgMask);
+        if(avg != null) {
+            avg = frame.copy();
+        }
+        accumulateWeighted(frame, avg, 0.5);
+        frameDelta = absdiff(frame, convertScaleAbs(avg));
+        //pBgSub->apply(frame, fgMask);
         //processing steps!
-        cv::morphologyEx(frame, frame, MORPH_CLOSE, kernel);
-        cv::morphologyEx(frame, frame, MORPH_OPEN, kernel);
-        cv::dilate(frame, frame, kernel, Point(-1,-1), 2);
+        //cv::morphologyEx(frame, frame, MORPH_CLOSE, kernel);
+        //cv::morphologyEx(frame, frame, MORPH_OPEN, kernel);
+        //cv::dilate(frame, frame, kernel, Point(-1,-1), 2);
         vector<vector<Point> > contours0;
-        findContours( frame, contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
+        findContours( frameDelta, contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
         for( int i = 0; i< contours0.size(); i++ ) // iterate through each contour. 
         {
            double a=contourArea( contours0[i],false);  //  Find the area of contour
