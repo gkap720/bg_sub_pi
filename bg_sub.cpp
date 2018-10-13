@@ -4,6 +4,7 @@
 #ifdef HAVE_OPENCV_CONTRIB
 #include <opencv2/bgsegm.hpp>
 using namespace cv::bgsegm;
+#include <numpy>
 #endif
 #include "bgsubcnt.h"
 using namespace cv;
@@ -89,7 +90,7 @@ int main( int argc, char** argv )
     int64 startTime = getTickCount();
     for(;;)
     {
-        Mat frame, fgMask, fg, bg;
+        Mat frame, fgMask, fg, bg, kernel;
         cap.grab();
         cap.retrieve ( frame);
         if( frame.empty() )
@@ -98,6 +99,11 @@ int main( int argc, char** argv )
         }
         
         pBgSub->apply(frame, fgMask);
+        //processing steps!
+        kernel = cv::getStructuringElement(cv.MORPH_ELLIPSE,(5,5));
+        frame = cv::morphologyEx(frame, cv2.MORPH_CLOSE, kernel);
+        frame = cv::morphologyEx(frame, cv2.MORPH_OPEN, kernel);
+        frame = cv::dilate(frame, kernel, iterations=2);
         if (hasGui)
         {
             imshow("Orig", frame);
