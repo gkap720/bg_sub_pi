@@ -107,7 +107,7 @@ int main( int argc, char** argv )
         cv::morphologyEx(frame, frame, MORPH_OPEN, kernel);
         cv::dilate(frame, frame, kernel, Point(-1,-1), 2);
         vector<vector<Point> > contours0;
-        findContours( frame, contours0, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);
+        findContours( frame, contours0, 0, RETR_TREE, CHAIN_APPROX_SIMPLE);
         for( int i = 0; i< contours0.size(); i++ ) // iterate through each contour. 
         {
            double a=contourArea( contours0[i],false);  //  Find the area of contour
@@ -119,7 +119,7 @@ int main( int argc, char** argv )
       
         }
         Scalar color( 255,255,255);
-        drawContours( frame, contours0, largest_contour_index, color, CV_FILLED, 8, hierarchy );
+        drawContours( frame, contours0, largest_contour_index, color, CV_FILLED, 8, 0 );
         imshow("FG", frame);
         if (hasGui)
         {
