@@ -105,6 +105,7 @@ int main( int argc, char** argv )
         }
         if(!init) {
             frame.copyTo(avg);
+            avg.convertTo(avg, CV_32F);
             init = true;
         }
         accumulateWeighted(frame, avg, 0.5);
