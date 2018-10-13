@@ -10,7 +10,6 @@ using namespace cv;
 using namespace std;
 const string keys =
         "{help h usage ? || print this message}"
-        "{file           || use file (default is system camera)}"
         "{type           |CNT| bg subtraction type from - CNT/MOG2/KNN"
 #ifdef HAVE_OPENCV_CONTRIB
         "/GMG/MOG"
@@ -21,7 +20,7 @@ const string keys =
 int main( int argc, char** argv )
 {
     raspicam::RaspiCam_Cv cap;
-    Cap.set( CV_CAP_PROP_FORMAT, CV_8UC1 );
+    cap.set( CV_CAP_PROP_FORMAT, CV_8UC1 );
     CommandLineParser parser(argc, argv, keys);
     parser.about("cv::bgsubcnt::BackgroundSubtractorCNT demo/benchmark/comparison");
     if (parser.has("help"))
@@ -29,31 +28,16 @@ int main( int argc, char** argv )
         parser.printMessage();
         return 0;
     }
-    bool hasFile = parser.has("file");
     bool hasGui = ! parser.has("nogui");
     bool bgImage = parser.has("bg");
     string type = parser.get<string>("type");
     string filePath;
-    if (hasFile)
-    {
-        filePath = parser.get<string>("file");
-        if (filePath == "true")
-        {
-            cout << "You must supply a file path argument with -file=filePath\n";
-            return 1;
-        }
-        cap.open(filePath);
-    }
-    else
-    {
-        cap.open(0);
-    }
     if (! parser.check())
     {
         parser.printErrors();
         return 1;
     }
-    if( !cap.isOpened() )
+    if( !cap.open() )
     {
         cout << "Could not initialize capturing...\n";
         return 0;
