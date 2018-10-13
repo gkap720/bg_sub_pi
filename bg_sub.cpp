@@ -77,7 +77,6 @@ int main( int argc, char** argv )
     bool showFG=true;
     if (hasGui)
     {
-        namedWindow("Orig", 1);
         namedWindow("FG", 1);
         if (bgImage)
         {
@@ -87,9 +86,14 @@ int main( int argc, char** argv )
                 "Use ESC to quit.\n" << endl;
     }
     int64 startTime = getTickCount();
+    Mat kernel;
+    kernel = cv::getStructuringElement(MORPH_ELLIPSE, Size(5,5));
     for(;;)
     {
-        Mat frame, fgMask, fg, bg, kernel;
+        Mat frame, fgMask, fg;
+        int largest_area=0;
+        int largest_contour_index=0;
+        Rect bounding_rect;
         cap.grab();
         cap.retrieve ( frame);
         if( frame.empty() )
@@ -99,27 +103,24 @@ int main( int argc, char** argv )
         
         pBgSub->apply(frame, fgMask);
         //processing steps!
-        kernel = cv::getStructuringElement(MORPH_ELLIPSE, Size(5,5));
         cv::morphologyEx(frame, frame, MORPH_CLOSE, kernel);
         cv::morphologyEx(frame, frame, MORPH_OPEN, kernel);
         cv::dilate(frame, frame, kernel, Point(-1,-1), 2);
-        if (hasGui)
+        vector<vector<Point> > contours0;
+        findContours( frame, contours0, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);
+        for( int i = 0; i< contours0.size(); i++ ) // iterate through each contour. 
         {
-            imshow("Orig", frame);
-            if (showFG)
-            {
-                frame.copyTo(fg, fgMask);
-                imshow("FG", fg);
-            }
+           double a=contourArea( contours0[i],false);  //  Find the area of contour
+           if(a>largest_area){
+               largest_area=a;
+               largest_contour_index=i;                //Store the index of largest contour
+               bounding_rect=boundingRect(contours0[i]); // Find the bounding rectangle for biggest contour
+           }
+      
         }
-        if (bgImage)
-        {
-            pBgSub->getBackgroundImage(bg);
-            if (hasGui)
-            {
-                imshow("BG", bg);
-            }
-        }
+        Scalar color( 255,255,255);
+        drawContours( frame, contours, largest_contour_index, color, CV_FILLED, 8, hierarchy );
+        imshow("FG", frame);
         if (hasGui)
         {
             char c = (char)waitKey(1);
