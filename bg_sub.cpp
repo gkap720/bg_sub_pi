@@ -4,7 +4,6 @@
 #ifdef HAVE_OPENCV_CONTRIB
 #include <opencv2/bgsegm.hpp>
 using namespace cv::bgsegm;
-#include <numpy>
 #endif
 #include "bgsubcnt.h"
 using namespace cv;
