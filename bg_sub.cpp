@@ -21,6 +21,8 @@ int main( int argc, char** argv )
 {
     raspicam::RaspiCam_Cv cap;
     cap.set( CV_CAP_PROP_FORMAT, CV_8UC1 );
+    cap.set(CAP_PROP_FRAME_WIDTH, 640);
+    cap.set(CAP_PROP_FRAME_HEIGHT, 480);
     CommandLineParser parser(argc, argv, keys);
     parser.about("cv::bgsubcnt::BackgroundSubtractorCNT demo/benchmark/comparison");
     if (parser.has("help"))
