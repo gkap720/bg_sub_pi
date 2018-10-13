@@ -46,10 +46,6 @@ int main( int argc, char** argv )
     if (type == "CNT")
     {
         int fps = 15;
-        if (hasFile)
-        {
-            fps = int(cap.get(CAP_PROP_FPS));
-        }
         pBgSub = cv::bgsubcnt::createBackgroundSubtractorCNT(fps, true, fps*60);
     }
     else if (type == "MOG2")
