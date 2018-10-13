@@ -96,9 +96,8 @@ int main( int argc, char** argv )
         {
             break;
         }
-        Mat gray;
-        cvtColor(frame, gray, COLOR_BGR2GRAY);
-        pBgSub->apply(gray, fgMask);
+        
+        pBgSub->apply(frame, fgMask);
         if (hasGui)
         {
             imshow("Orig", frame);
