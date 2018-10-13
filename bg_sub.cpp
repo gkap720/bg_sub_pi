@@ -119,7 +119,7 @@ int main( int argc, char** argv )
       
         }
         Scalar color( 255,255,255);
-        drawContours( frame, contours, largest_contour_index, color, CV_FILLED, 8, hierarchy );
+        drawContours( frame, contours0, largest_contour_index, color, CV_FILLED, 8, hierarchy );
         imshow("FG", frame);
         if (hasGui)
         {
@@ -132,10 +132,6 @@ int main( int argc, char** argv )
             {
                 imwrite("frame.jpg", frame);
                 imwrite("fg.jpg", fg);
-                if (bgImage)
-                {
-                    imwrite("bg.jpg", bg);
-                }
             }
         }
     }
