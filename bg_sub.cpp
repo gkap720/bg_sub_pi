@@ -99,10 +99,10 @@ int main( int argc, char** argv )
         
         pBgSub->apply(frame, fgMask);
         //processing steps!
-        kernel = cv::getStructuringElement(cv.MORPH_ELLIPSE,(5,5));
-        frame = cv::morphologyEx(frame, cv2.MORPH_CLOSE, kernel);
-        frame = cv::morphologyEx(frame, cv2.MORPH_OPEN, kernel);
-        frame = cv::dilate(frame, kernel, iterations=2);
+        kernel = cv::getStructuringElement(MORPH_ELLIPSE,(5,5));
+        cv::morphologyEx(frame, frame, MORPH_CLOSE, kernel);
+        cv::morphologyEx(frame, frame, MORPH_OPEN, kernel);
+        cv::dilate(frame, frame, kernel, new Point(-1,-1), 2);
         if (hasGui)
         {
             imshow("Orig", frame);
