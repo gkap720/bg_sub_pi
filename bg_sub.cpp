@@ -108,7 +108,8 @@ int main( int argc, char** argv )
             init = true;
         }
         accumulateWeighted(frame, avg, 0.5);
-        frameDelta = absdiff(frame, convertScaleAbs(avg, avg));
+        convertScaleAbs(avg, avg);
+        frameDelta = absdiff(frame, avg);
         //pBgSub->apply(frame, fgMask);
         //processing steps!
         //cv::morphologyEx(frame, frame, MORPH_CLOSE, kernel);
