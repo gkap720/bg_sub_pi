@@ -89,6 +89,7 @@ int main( int argc, char** argv )
     }
     int64 startTime = getTickCount();
     Mat kernel, avg, frameDelta;
+    bool init = false;
     kernel = cv::getStructuringElement(MORPH_ELLIPSE, Size(5,5));
     for(;;)
     {
@@ -102,8 +103,9 @@ int main( int argc, char** argv )
         {
             break;
         }
-        if(avg != null) {
-            avg = frame.copy();
+        if(!init) {
+            frame.copyTo(avg);
+            init = true;
         }
         accumulateWeighted(frame, avg, 0.5);
         frameDelta = absdiff(frame, convertScaleAbs(avg));
