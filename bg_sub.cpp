@@ -63,19 +63,7 @@ int main( int argc, char** argv )
             //drawContours( frame, contours0, contours0.size()-1, color, CV_FILLED, 8 );
         }
         imshow("FG", frameDelta);
-        if (hasGui)
-        {
-            char c = (char)waitKey(1);
-            if (c == 27)
-            {
-                break;
-            }
-            else if (c == 's')
-            {
-                imwrite("frame.jpg", frame);
-                imwrite("fg.jpg", fg);
-            }
-        }
+        waitKey(30);
     }
     double tfreq = getTickFrequency();
     double secs = ((double) getTickCount() - startTime)/tfreq;
