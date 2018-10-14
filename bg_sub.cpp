@@ -1,7 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <raspicam/raspicam_cv.h>
-#ifdef HAVE_OPENCV_CONTRIB
 using namespace cv;
 using namespace std;
 
