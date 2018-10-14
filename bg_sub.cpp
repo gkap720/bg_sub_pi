@@ -32,6 +32,8 @@ int main( int argc, char** argv )
     }
     int64 startTime = getTickCount();
     Mat avg, frameDelta;
+    int moveAvg [10] = [];
+    int index = 0;
     bool init = false;
     for(;;)
     {
@@ -67,14 +69,20 @@ int main( int argc, char** argv )
         cvtColor(frameDelta, frameDelta, cv::COLOR_GRAY2BGR);
         drawContours( frameDelta, contours0, 0, color, CV_FILLED, 8);
         if(contours0.size() > 0) {
-            int cX, cY, n;
+            int cX, cY, n, outNumber;
             cv::Moments M;
             M = moments(contours0[contours0.size()-1]);
             cX = int(M.m10 / M.m00);
             cY = int(M.m01 / M.m00);
             circle(frameDelta, Point(cX, cY), 7, color, -1);
             cout << cX << endl;
-            serialPrintf(fd, "%d\n", cX);
+            int sum = 0;
+            moveAvg[index] = cX;
+            for(int i = 0; i < 10; i++) {
+                sum += moveAvg[i];
+            }
+            outNumber = sum/10;
+            serialPrintf(fd, "%d\n", outNumber);
         }
         imshow("FG", frameDelta);
         waitKey(30);
