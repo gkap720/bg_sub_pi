@@ -5,6 +5,7 @@ PROJECT(bg_sub)
 FIND_PACKAGE(OpenCV 3.1.0 REQUIRED)
 set(raspicam_DIR "/usr/local/lib/cmake")
 find_package(raspicam REQUIRED)
+find_package(wiringPi)
 
 INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS} "/usr/local/include")
 
