@@ -42,11 +42,10 @@ int main( int argc, char** argv )
     int moveAvg [10] = {};
     int index = 0;
     bool init = false;
-    int inactive = 0, dir = 0, last = 0;
+    int inactive = 0, dir = 0, last = 0, outNumber = 0;;
     for(;;)
     {
         Mat frame, fgMask, fg;
-        int outNumber = 0;
         cap.grab();
         cap.retrieve ( frame);
         if( frame.empty() )
