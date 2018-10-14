@@ -42,9 +42,11 @@ int main( int argc, char** argv )
     int moveAvg [10] = {};
     int index = 0;
     bool init = false;
+    int inactive = 0, dir = 0, last = 0;
     for(;;)
     {
         Mat frame, fgMask, fg;
+        int outNumber = 0;
         cap.grab();
         cap.retrieve ( frame);
         if( frame.empty() )
@@ -66,7 +68,7 @@ int main( int argc, char** argv )
         findContours( frameDelta.clone(), contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
         std::sort(contours0.begin(), contours0.end(), compareContourAreas);
         if(contours0.size() > 0) {
-            int cX, cY, n, outNumber;
+            int cX, cY, n;
             cv::Moments M;
             M = moments(contours0[contours0.size()-1]);
             cX = int(M.m10 / M.m00);
@@ -78,8 +80,6 @@ int main( int argc, char** argv )
                 sum += moveAvg[i];
             }
             outNumber = sum/10;
-            serialPrintf(fd, "%d\n", outNumber);
-            cout << outNumber << endl;
             if(display) {
                 Scalar color( 255,0,0);
                 cvtColor(frameDelta, frameDelta, cv::COLOR_GRAY2BGR);
@@ -87,7 +87,24 @@ int main( int argc, char** argv )
                 circle(frameDelta, Point(cX, cY), 7, color, -1);
                 imshow("FG", frameDelta);
             }
+            inactive = 0;
+        } else {
+            inactive++;
         }
+        if(outNumber > last) {
+            dir = 1;
+        } else {
+            dir = -1;
+        }
+        if(inactive > 10) {
+            outNumber -= 5;
+            if(outNumber < 0) {
+                outNumber = 0;
+            }
+        }
+        last = outNumber;
+        serialPrintf(fd, "%d\n", outNumber);
+        cout << outNumber << endl;
         waitKey(30);
     }
     double tfreq = getTickFrequency();
