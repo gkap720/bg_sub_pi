@@ -100,6 +100,8 @@ int main( int argc, char** argv )
             if(outNumber < 0) {
                 outNumber = 0;
             }
+            moveAvg[index] = outNumber;
+            index = (index + 1) % 10;
         }
         if(!(outNumber == last)) {
             serialPrintf(fd, "%d\n", outNumber);
