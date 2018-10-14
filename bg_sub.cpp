@@ -75,7 +75,6 @@ int main( int argc, char** argv )
             cX = int(M.m10 / M.m00);
             cY = int(M.m01 / M.m00);
             circle(frameDelta, Point(cX, cY), 7, color, -1);
-            cout << cX << endl;
             int sum = 0;
             moveAvg[index] = cX;
             index = (index + 1) % 10;
@@ -84,6 +83,7 @@ int main( int argc, char** argv )
             }
             outNumber = sum/10;
             serialPrintf(fd, "%d\n", outNumber);
+            cout << cX << ", " << outNumber << endl;
         }
         imshow("FG", frameDelta);
         waitKey(30);
