@@ -71,7 +71,6 @@ int main( int argc, char** argv )
             M = moments(contours0[contours0.size()-1]);
             cX = int(M.m10 / M.m00);
             cY = int(M.m01 / M.m00);
-            circle(frameDelta, Point(cX, cY), 7, color, -1);
             int sum = 0;
             moveAvg[index] = cX;
             index = (index + 1) % 10;
@@ -85,6 +84,7 @@ int main( int argc, char** argv )
                 Scalar color( 255,0,0);
                 cvtColor(frameDelta, frameDelta, cv::COLOR_GRAY2BGR);
                 drawContours( frameDelta, contours0, 0, color, CV_FILLED, 8);
+                circle(frameDelta, Point(cX, cY), 7, color, -1);
                 imshow("FG", frameDelta);
             }
         }
