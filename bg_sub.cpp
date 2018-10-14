@@ -17,6 +17,12 @@ const string keys =
         "}"
         "{bg             || calculate also the background}"
         "{nogui          || run without GUI to measure times}";
+
+bool compareContourAreas ( std::vector<cv::Point> contour1, std::vector<cv::Point> contour2 ) {
+    double i = fabs( contourArea(cv::Mat(contour1)) );
+    double j = fabs( contourArea(cv::Mat(contour2)) );
+    return ( i < j );
+}
 int main( int argc, char** argv )
 {
     raspicam::RaspiCam_Cv cap;
@@ -145,8 +151,3 @@ int main( int argc, char** argv )
     cout << "Execution took " << fixed << secs << " seconds." << endl;
 }
 
-bool compareContourAreas ( std::vector<cv::Point> contour1, std::vector<cv::Point> contour2 ) {
-    double i = fabs( contourArea(cv::Mat(contour1)) );
-    double j = fabs( contourArea(cv::Mat(contour2)) );
-    return ( i < j );
-}
