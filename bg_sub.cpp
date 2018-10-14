@@ -109,6 +109,7 @@ int main( int argc, char** argv )
         {
             break;
         }
+        GaussianBlur(frame, frame, Size(21, 21), 0);
         if(!init) {
             frame.copyTo(avg);
             avg.convertTo(avg, CV_32F);
@@ -118,11 +119,6 @@ int main( int argc, char** argv )
         accumulateWeighted(frame, avg, 0.5);
         convertScaleAbs(avg, avg);
         absdiff(frame, avg, frameDelta);
-        //pBgSub->apply(frame, fgMask);
-        //processing steps!
-        //cv::morphologyEx(frame, frame, MORPH_CLOSE, kernel);
-        //cv::morphologyEx(frame, frame, MORPH_OPEN, kernel);
-        //cv::dilate(frame, frame, kernel, Point(-1,-1), 2);
         vector<vector<Point> > contours0;
         findContours( frameDelta, contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
         std::sort(contours0.begin(), contours0.end(), compareContourAreas);
