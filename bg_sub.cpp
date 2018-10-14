@@ -17,6 +17,7 @@ int main( int argc, char** argv )
     cap.set(CAP_PROP_FRAME_HEIGHT, 480);
     cap.setAWB(0);
     cap.set(CAP_PROP_EXPOSURE, 0);
+    int thresh = 50;
     if( !cap.open() )
     {
         cout << "Could not initialize capturing...\n";
@@ -43,11 +44,14 @@ int main( int argc, char** argv )
             avg.convertTo(avg, CV_32F);
             init = true;
         }
+        if(argc > 1) {
+            thresh = std::stoi(argv[1]);
+        }
         avg.convertTo(avg, CV_32F);
         accumulateWeighted(frame, avg, 0.5);
         convertScaleAbs(avg, avg);
         absdiff(frame, avg, frameDelta);
-        threshold( frameDelta, frameDelta, 150, 255, THRESH_BINARY );
+        threshold( frameDelta, frameDelta, thresh, 255, THRESH_BINARY );
         vector<vector<Point> > contours0;
         findContours( frameDelta, contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
         std::sort(contours0.begin(), contours0.end(), compareContourAreas);
