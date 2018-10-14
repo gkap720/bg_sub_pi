@@ -45,7 +45,7 @@ int main( int argc, char** argv )
         {
             break;
         }
-        GaussianBlur(frame, frame, Size(21, 21), 0);
+        //GaussianBlur(frame, frame, Size(21, 21), 0);
         if(!init) {
             frame.copyTo(avg);
             avg.convertTo(avg, CV_32F);
