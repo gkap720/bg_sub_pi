@@ -102,7 +102,7 @@ int main( int argc, char** argv )
             }
         }
         last = outNumber;
-        if(!outNumber == last) {
+        if(!(outNumber == last)) {
             serialPrintf(fd, "%d\n", outNumber);
             cout << outNumber << endl;
         }
