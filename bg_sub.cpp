@@ -47,7 +47,7 @@ int main( int argc, char** argv )
         accumulateWeighted(frame, avg, 0.5);
         convertScaleAbs(avg, avg);
         absdiff(frame, avg, frameDelta);
-        threshold( frameDelta, frameDelta, 0, 255, 0 );
+        threshold( frameDelta, frameDelta, 200, 255, 0 );
         vector<vector<Point> > contours0;
         findContours( frameDelta, contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
         std::sort(contours0.begin(), contours0.end(), compareContourAreas);
