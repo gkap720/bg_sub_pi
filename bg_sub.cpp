@@ -18,6 +18,7 @@ int main( int argc, char** argv )
     cap.setAWB(0);
     cap.set(CAP_PROP_EXPOSURE, 0);
     int thresh = 50;
+    float speed = 0.5;
     if( !cap.open() )
     {
         cout << "Could not initialize capturing...\n";
@@ -46,9 +47,10 @@ int main( int argc, char** argv )
         }
         if(argc > 1) {
             thresh = atoi(argv[1]);
+            speed = atof(argv[2]);
         }
         avg.convertTo(avg, CV_32F);
-        accumulateWeighted(frame, avg, 0.5);
+        accumulateWeighted(frame, avg, speed);
         convertScaleAbs(avg, avg);
         absdiff(frame, avg, frameDelta);
         threshold( frameDelta, frameDelta, thresh, 255, THRESH_BINARY );
