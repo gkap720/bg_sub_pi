@@ -109,7 +109,7 @@ int main( int argc, char** argv )
             init = true;
         }
         avg.convertTo(avg, CV_32F);
-        //accumulateWeighted(frame, avg, 0.5);
+        accumulateWeighted(frame, avg, 0.5);
         convertScaleAbs(avg, avg);
         absdiff(frame, avg, frameDelta);
         //pBgSub->apply(frame, fgMask);
@@ -119,18 +119,12 @@ int main( int argc, char** argv )
         //cv::dilate(frame, frame, kernel, Point(-1,-1), 2);
         vector<vector<Point> > contours0;
         findContours( frameDelta, contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
-        for( int i = 0; i< contours0.size(); i++ ) // iterate through each contour. 
-        {
-           double a=contourArea( contours0[i],false);  //  Find the area of contour
-           if(a>largest_area){
-               largest_area=a;
-               largest_contour_index=i;                //Store the index of largest contour
-               bounding_rect=boundingRect(contours0[i]); // Find the bounding rectangle for biggest contour
-           }
-      
+        std::sort(contours0.begin(), contours0.end(), compareContourAreas);
+        Scalar color( 255,0,0);
+        frame.convertTo(frame, CV_8UC3);
+        if(contours0.size()>1) {
+            drawContours( frame, contours0, contours0.size()-2, color, CV_FILLED, 8 );
         }
-        Scalar color( 255,255,255);
-        drawContours( frame, contours0, largest_contour_index, color, CV_FILLED, 8 );
         imshow("FG", frame);
         if (hasGui)
         {
@@ -149,4 +143,10 @@ int main( int argc, char** argv )
     double tfreq = getTickFrequency();
     double secs = ((double) getTickCount() - startTime)/tfreq;
     cout << "Execution took " << fixed << secs << " seconds." << endl;
+}
+
+bool compareContourAreas ( std::vector<cv::Point> contour1, std::vector<cv::Point> contour2 ) {
+    double i = fabs( contourArea(cv::Mat(contour1)) );
+    double j = fabs( contourArea(cv::Mat(contour2)) );
+    return ( i < j );
 }
