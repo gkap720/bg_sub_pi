@@ -78,6 +78,7 @@ int main( int argc, char** argv )
             cout << cX << endl;
             int sum = 0;
             moveAvg[index] = cX;
+            index = (index + 1) % 10;
             for(int i = 0; i < 10; i++) {
                 sum += moveAvg[i];
             }
