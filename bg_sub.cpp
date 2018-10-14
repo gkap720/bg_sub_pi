@@ -61,7 +61,7 @@ int main( int argc, char** argv )
         absdiff(frame, avg, frameDelta);
         threshold( frameDelta, frameDelta, thresh, 255, THRESH_BINARY );
         vector<vector<Point> > contours0;
-        findContours( frameDelta, contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
+        findContours( frameDelta.clone(), contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
         std::sort(contours0.begin(), contours0.end(), compareContourAreas);
         Scalar color( 255,0,0);
         cvtColor(frameDelta, frameDelta, cv::COLOR_GRAY2BGR);
