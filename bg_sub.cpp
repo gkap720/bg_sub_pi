@@ -55,8 +55,9 @@ int main( int argc, char** argv )
         vector<vector<Point> > contours0;
         findContours( frameDelta, contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
         std::sort(contours0.begin(), contours0.end(), compareContourAreas);
-        Scalar color( 1,0,0);
+        Scalar color( 255,0,0);
         cvtColor(frameDelta, frameDelta, cv::COLOR_GRAY2BGR);
+        drawContours( frameDelta, contours0, 0, color, CV_FILLED, 8);
         if(contours0.size() > 0) {
             int cX, cY;
             cv::Moments M;
@@ -64,6 +65,7 @@ int main( int argc, char** argv )
             cX = int(M.m10 / M.m00);
             cY = int(M.m01 / M.m00);
             circle(frameDelta, Point(cX, cY), 7, color, -1);
+            cout << cX << endl;
         }
         imshow("FG", frameDelta);
         waitKey(30);
