@@ -131,7 +131,7 @@ int main( int argc, char** argv )
         if(contours0.size()>1) {
             int cX, cY;
             cv::Moments M;
-            M = moments(contours0[contours0.size()-1])
+            M = moments(contours0[contours0.size()-1]);
             cX = int(M.m10 / M.m00);
             cY = int(M.m01 / M.m00);
             circle(frame, Point(cX, cY), 7, color, -1);
