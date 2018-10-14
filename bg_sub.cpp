@@ -46,12 +46,13 @@ int main( int argc, char** argv )
         avg.convertTo(avg, CV_32F);
         accumulateWeighted(frame, avg, 0.5);
         convertScaleAbs(avg, avg);
+        frame.convertTo(frame, CV_32F);
         absdiff(frame, avg, frameDelta);
-        threshold( frameDelta, frameDelta, 200, 255, 0 );
+        threshold( frameDelta, frameDelta, 0.8, 1, 0 );
         vector<vector<Point> > contours0;
         findContours( frameDelta, contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
         std::sort(contours0.begin(), contours0.end(), compareContourAreas);
-        Scalar color( 255,0,0);
+        Scalar color( 1,0,0);
         cvtColor(frameDelta, frameDelta, cv::COLOR_GRAY2BGR);
         if(contours0.size()>1) {
             int cX, cY;
