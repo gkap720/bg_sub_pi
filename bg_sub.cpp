@@ -19,6 +19,7 @@ int main( int argc, char** argv )
     cap.set(CAP_PROP_FRAME_HEIGHT, 480);
     cap.setAWB(0);
     cap.set(CAP_PROP_EXPOSURE, 0);
+    bool display = true;
     int fd = serialOpen("/dev/ttyUSB0", 115200);
     if (fd < 0)
         cout << "Error opening serial\n";
@@ -30,6 +31,12 @@ int main( int argc, char** argv )
         cout << "Could not initialize capturing...\n";
         return 0;
     }
+
+    if(argc > 1) {
+        thresh = atoi(argv[1]);
+        speed = atof(argv[2]);
+        display = (bool) atoi(argv[3]);
+    }
     int64 startTime = getTickCount();
     Mat avg, frameDelta;
     int moveAvg [10] = {};
@@ -38,9 +45,6 @@ int main( int argc, char** argv )
     for(;;)
     {
         Mat frame, fgMask, fg;
-        int largest_area=0;
-        int largest_contour_index=0;
-        Rect bounding_rect;
         cap.grab();
         cap.retrieve ( frame);
         if( frame.empty() )
@@ -53,10 +57,6 @@ int main( int argc, char** argv )
             avg.convertTo(avg, CV_32F);
             init = true;
         }
-        if(argc > 1) {
-            thresh = atoi(argv[1]);
-            speed = atof(argv[2]);
-        }
         avg.convertTo(avg, CV_32F);
         accumulateWeighted(frame, avg, speed);
         convertScaleAbs(avg, avg);
@@ -65,9 +65,6 @@ int main( int argc, char** argv )
         vector<vector<Point> > contours0;
         findContours( frameDelta.clone(), contours0, RETR_TREE, CHAIN_APPROX_SIMPLE);
         std::sort(contours0.begin(), contours0.end(), compareContourAreas);
-        Scalar color( 255,0,0);
-        cvtColor(frameDelta, frameDelta, cv::COLOR_GRAY2BGR);
-        drawContours( frameDelta, contours0, 0, color, CV_FILLED, 8);
         if(contours0.size() > 0) {
             int cX, cY, n, outNumber;
             cv::Moments M;
@@ -83,9 +80,14 @@ int main( int argc, char** argv )
             }
             outNumber = sum/10;
             serialPrintf(fd, "%d\n", outNumber);
-            cout << cX << ", " << outNumber << endl;
+            cout << outNumber << endl;
+            if(display) {
+                Scalar color( 255,0,0);
+                cvtColor(frameDelta, frameDelta, cv::COLOR_GRAY2BGR);
+                drawContours( frameDelta, contours0, 0, color, CV_FILLED, 8);
+                imshow("FG", frameDelta);
+            }
         }
-        imshow("FG", frameDelta);
         waitKey(30);
     }
     double tfreq = getTickFrequency();
