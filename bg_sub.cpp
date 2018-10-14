@@ -32,7 +32,7 @@ int main( int argc, char** argv )
     }
     int64 startTime = getTickCount();
     Mat avg, frameDelta;
-    int moveAvg [10] = [];
+    int moveAvg [10] = {};
     int index = 0;
     bool init = false;
     for(;;)
