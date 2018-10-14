@@ -45,7 +45,7 @@ int main( int argc, char** argv )
             init = true;
         }
         if(argc > 1) {
-            thresh = std::stoi(argv[1]);
+            thresh = atoi(argv[1]);
         }
         avg.convertTo(avg, CV_32F);
         accumulateWeighted(frame, avg, 0.5);
