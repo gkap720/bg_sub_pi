@@ -101,11 +101,11 @@ int main( int argc, char** argv )
                 outNumber = 0;
             }
         }
-        last = outNumber;
         if(!(outNumber == last)) {
             serialPrintf(fd, "%d\n", outNumber);
             cout << outNumber << endl;
         }
+        last = outNumber;
         waitKey(30);
     }
     double tfreq = getTickFrequency();
