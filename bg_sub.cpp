@@ -16,7 +16,7 @@ int main( int argc, char** argv )
     cap.set(CAP_PROP_FRAME_WIDTH, 640);
     cap.set(CAP_PROP_FRAME_HEIGHT, 480);
     cap.setAWB(0);
-    cap.set(CV_CAP_EXPOSURE, 0);
+    cap.set(CAP_PROP_EXPOSURE, 0);
     if( !cap.open() )
     {
         cout << "Could not initialize capturing...\n";
