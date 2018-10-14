@@ -129,9 +129,11 @@ int main( int argc, char** argv )
         Scalar color( 255,0,0);
         cvtColor(frame, frame, cv::COLOR_GRAY2BGR);
         if(contours0.size()>1) {
+            int cX, cY;
+            cv::Moments M;
             M = moments(contours0[contours0.size()-1])
-            cX = int(M["m10"] / M["m00"]);
-            cY = int(M["m01"] / M["m00"]);
+            cX = int(M.m10 / M.m00);
+            cY = int(M.m01 / M.m00);
             circle(frame, Point(cX, cY), 7, color, -1);
             //drawContours( frame, contours0, contours0.size()-1, color, CV_FILLED, 8 );
         }
