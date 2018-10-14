@@ -45,7 +45,7 @@ int main( int argc, char** argv )
         {
             break;
         }
-        //GaussianBlur(frame, frame, Size(21, 21), 0);
+        GaussianBlur(frame, frame, Size(5, 5), 0);
         if(!init) {
             frame.copyTo(avg);
             avg.convertTo(avg, CV_32F);
@@ -69,7 +69,7 @@ int main( int argc, char** argv )
         if(contours0.size() > 0) {
             int cX, cY, n;
             cv::Moments M;
-            M = moments(contours0[0]);
+            M = moments(contours0[contours0.size()-1]);
             cX = int(M.m10 / M.m00);
             cY = int(M.m01 / M.m00);
             circle(frameDelta, Point(cX, cY), 7, color, -1);
