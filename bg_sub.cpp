@@ -57,15 +57,12 @@ int main( int argc, char** argv )
         std::sort(contours0.begin(), contours0.end(), compareContourAreas);
         Scalar color( 1,0,0);
         cvtColor(frameDelta, frameDelta, cv::COLOR_GRAY2BGR);
-        if(contours0.size()>1) {
-            int cX, cY;
-            cv::Moments M;
-            M = moments(contours0[contours0.size()-1]);
-            cX = int(M.m10 / M.m00);
-            cY = int(M.m01 / M.m00);
-            circle(frameDelta, Point(cX, cY), 7, color, -1);
-            //drawContours( frame, contours0, contours0.size()-1, color, CV_FILLED, 8 );
-        }
+        int cX, cY;
+        cv::Moments M;
+        M = moments(contours0[0]);
+        cX = int(M.m10 / M.m00);
+        cY = int(M.m01 / M.m00);
+        circle(frameDelta, Point(cX, cY), 7, color, -1);
         imshow("FG", frameDelta);
         waitKey(30);
     }
