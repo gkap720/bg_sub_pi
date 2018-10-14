@@ -74,7 +74,7 @@ int main( int argc, char** argv )
             cY = int(M.m01 / M.m00);
             circle(frameDelta, Point(cX, cY), 7, color, -1);
             cout << cX << endl;
-            serialPutchar(fd, cX);
+            serialPrintf(fd, cX);
         }
         imshow("FG", frameDelta);
         waitKey(30);
