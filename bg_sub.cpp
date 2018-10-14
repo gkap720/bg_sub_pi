@@ -108,7 +108,8 @@ int main( int argc, char** argv )
             avg.convertTo(avg, CV_32F);
             init = true;
         }
-        accumulateWeighted(frame, avg, 0.5);
+        avg.convertTo(avg, CV_32F);
+        //accumulateWeighted(frame, avg, 0.5);
         convertScaleAbs(avg, avg);
         absdiff(frame, avg, frameDelta);
         //pBgSub->apply(frame, fgMask);
