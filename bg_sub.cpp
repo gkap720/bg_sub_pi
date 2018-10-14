@@ -57,7 +57,7 @@ int main( int argc, char** argv )
         std::sort(contours0.begin(), contours0.end(), compareContourAreas);
         Scalar color( 1,0,0);
         cvtColor(frameDelta, frameDelta, cv::COLOR_GRAY2BGR);
-        if(contors0.size() > 0) {
+        if(contours0.size() > 0) {
             int cX, cY;
             cv::Moments M;
             M = moments(contours0[0]);
