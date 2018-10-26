@@ -20,7 +20,7 @@ int main( int argc, char** argv )
     cap.setAWB(0);
     cap.set(CAP_PROP_EXPOSURE, 0);
     bool display = true;
-    int fd = serialOpen("/dev/ttyUSB0", 115200);
+    int fd = serialOpen("/dev/ttyS0", 115200);
     if (fd < 0)
         cout << "Error opening serial\n";
     
